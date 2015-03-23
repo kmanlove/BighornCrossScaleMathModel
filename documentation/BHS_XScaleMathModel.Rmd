@@ -1,0 +1,121 @@
+---
+title: "Cross-scale mathematical model of bighorn disease dynamics"
+author: "Paul Cross$^{*}$ & Kezia Manlove$^{*}$"
+date: "03/23/2015"
+output: pdf_document
+---
+
+Paper Objective
+---
+
+1. Present EEID models
+2. Examine impact of exponential pathogen population growth within-host
+3. Experiment with several functional forms for relationship between pathogen pop size and immune response size
+
+Introduction
+---
+
+Host response to pathogen presence and pathogen population expansion has major impacts on individual host health. Hosts who resist pathogens adopt a relatively risky strategy since they invest energetic resources and potentially damage their own cells in order to stem pathogen growth. Hosts who tolerate pathogen presence (that is, hosts who endure relatively high pathogen burdens with relatively low fitness costs) avoid commiting resources to fighting pathogens, while at the same time reducing their risk of experiencing immunopathology. The cost of this strategy is that hosts who tolerate high pathogen loads are responsible for energetically supporting large and growing parasitic populations, and therefore have fewer resources to commit to their growth and reproduction. Furthermore, under some conditions of tolerance, tolerant hosts may impose higher forces of infection on their neighboring hosts than highly resistant individuals. However, general descriptions of how pathogen community size and host defenses interact to impact host population-level disease processes remain rare. 
+
+Here we address the question, "How do host defense efficacy, host defense damage, and pathogen damage scale to shape pathogen persistence time and prevalence at the population level?" We explore this question through a set of partial differential equations. We use several functional forms to reflect different levels of host defense efficacy, defense damage, and pathogen damage. 
+
+
+
+Hypotheses 
+---
+Different functional relationships between pathogen population size and host defense mechanisms will produce different emergent properties in population-level patterns of disease prevalence and impacts on host vital rates. Specifically, we hypothesize that 
+
+Methods
+---
+
+Although the deterministic framework of this model means that it is not explicitly agent-based, the cross-scale nature of our research question lends the model to description under existing protocols for agent-based model description (Grimm **et al.**, 2006; Grimm **et al.**, 2010). We follow these protocols in the following. 
+
+### Biological background
+
+Many functional forms have been used to describe the relationship between pathogen community size and a host's immune amplification and immunopathology (e.g., REFS). Classically, the relationship between pathogen community size and host immune amplification was described as a Lotka-Volterra-like predator-prey system (REF). In particulary, the Holling type III functional response is a reasonable model for the relationship between pathogen population and host immune defense. The critical aspect of this model for our purposes is how within-host immune response and pathogen population size map to disease-induced mortality rates and force of infection, the two processes that shape pathogen prevalence and persistence, and epidemic impacts at the population level.  
+
+### Model description
+
+Model structure was inspired by Anderson and May 1992, pg. 58
+
+#### Purpose
+
+The first purpose of this model is to capture the general cross-scale relationships linking within-host immune defenses, damages, and pathogen population damages to pathogen persistence and prevalence and disease burden at the population level. The second purpose of the model is to describe the impacts that different functional relationships between within-host immune defenses, damages, and pathogen population damages have on shaping host population-level disease properties. 
+
+#### Entities, state variables, and scales
+
+The model consists of five compartments, two at the within-host level and three at the population level. At the within-host level, the compartments are the pathogen population and the host immune defense. At the between-host level, the compartments are the standard "SIR" compartments, consisting of susceptible, infected, and recovered hosts.
+
+The within-host and population-level models operate on different temporal scales. Within-host processes are dependent on $\tau$, the time since infection.  Between-host processes are dependent on $t$, the time since pathogen introduction into the host population. 
+
+#### Process overview and scheduling
+
+At the between-host level, hosts move from susceptible ($X$) to infected ($Y$) to recovered ($Z$) along a population-level timescale indexed by $t$. The infectious state, $Y$, is subject to a second timescale, $\tau$, indexing time since infection. $\tau$ applies only to $Y$ and not to $X$ or $Z$. Within-host dynamics initiate upon moves from $X$ to $Y$, so that $\tau = 0$ is the moment of infection for a given host. The system is initiated when the first parasite colonizes the first host, so $Y(0, 0) = 1$, and by definition, $\tau$ must be less than $t$ for all $Y(\tau, t)$. 
+
+##### Within-host pathogen dynamics
+Within-host disease dynamics at time $\tau$ following initial infection are described as a Holling Type III functional relationship between the pathogen population size ($L(\tau)$) and the size of the host's immune defense ($D(\tau)$). The Holling Type III functional response is governed by three parameters, $\nu$, $\psi$, and $\phi$, which govern the speed and asymptote of the immune response. 
+
+$$\frac{dL(\tau)}{d\tau} = \rho L(\tau) - \frac{\nu L(\tau)^{2}D(\tau)}{\psi^{2} + L(\tau)^{2}}$$
+
+$$\frac{dD(\tau)}{d\tau} = D(\tau)\frac{\phi\nu L(\tau)^{2}}{\psi^{2} + L(\tau)^{2}} - \epsilon D(\tau)$$
+
+##### Between-host interactions and transmission
+
+Hosts reside in one of three compartments: at a given point $t$ in time, they are either susceptible to pathogen colonization ($X$), currently infected with the pathogen ($Y$), or recovered and immune for pathogen colonization ($Z$). Between-host processes are described by the following set of equations:
+
+$$\frac{d(X(t))}{dt} = \theta(t)\left(X(t) + Y(t) + Z(t)\right) - \left(\lambda(t) + \mu(t) \right)X(t)$$
+$$\frac{\partial Y(t, \tau)}{\partial\tau} + \frac{\partial Y(t, \tau)}{\partial t} = X(t)\lambda(t) - \left(\mu(t) + \alpha(t))\right)Y(t, \tau)$$
+
+
+##### Cross-scale relationships
+
+Two functions relate within-host and between-host processes, the force of infection, $\lambda(t)$, and the disease-induced mortality rate, $\alpha(t)$. 
+
+The force of infection, $\lambda(t)$, governs the transition process that drives hosts from compartment $X$ to compartment $Y$. The rate of this transition depends on the current pathogen population size aggregated over all currently infected hosts ($Y$), and dependent up on where each host is at in its own person infection process (e.g., each host's $\tau$ at time $t$). In full, $\lambda(t)$ can be written as
+
+$$\lambda(t) = \beta\int_{0}^{t}Y(t,\tau)f_{1}\left(L(\tau), D(\tau)\right) d\tau $$
+
+The disease-induced mortality rate, $\alpha(t)$, depends on the prevalence and severity of infection throughout the population as a whole at thie $t$, as described by pathogen load/immune-defense relationship $f_{2}\left(L(\tau), D(\tau)\right)$ such that
+
+$$\alpha(t) = \int_{0}^{t}f_{2}\left(L(\tau), D(\tau)\right)d\tau$$
+
+Our objective here is to examine the impact that different structures of $f_{1}\left(L\tau), D(\tau)\right)$ and $f_{2}\left(L\tau), D(\tau)\right)$ have on pathogen prevalence and persistence and epidemic severity at the population level.
+
+##### Structures of $f_{1}$ and $f_{2}$
+
+We examine three simple structures of $f_{1}$ and $f_{2}$. For the force of infection relationship, $f_{1}$, we consider three cases. In the first case, (a) force of infection depends entirely on pathogen population size. In the second case, (b) force of infection is mitigated by the host's immune response. In the third case, (c), force of infection is enhanced by the host's immune response. Formally, 
+$$\text{(a) } f_{1}\left(L(\tau), D(\tau)\right) \propto L(\tau),$$
+$$\text{(b) }f_{1}\left(L(\tau), D(\tau)\right) \propto L(\tau) - L(\tau) \times D(\tau),$$
+$$\text{(c) }f_{1}\left(L(\tau), D(\tau)\right) \propto L(\tau) + L(\tau) \times D(\tau)$$
+
+For the disease-induced mortality relationship, $f_{2}$, we consider the two extreme cases, (d) where disease-induced mortality is entirely driven by parisitemia, and (e) where disease-induced mortality is entirely driven by immunopathology. We also consider a third intermediate case, (f), where paristemia and immunopathology contribute equally. These cases can be written as
+
+$$\text{(d) } f_{2}\left(L(\tau), D(\tau)\right) \propto L(\tau),$$
+$$\text{(e) }f_{2}\left(L(\tau), D(\tau)\right) \propto D(\tau),$$
+$$\text{(f) }f_{2}\left(L(\tau), D(\tau)\right) \propto L(\tau) + D(\tau)$$
+
+
+##### Stochasticity
+
+##### (Observation??)
+
+### Initialization
+We initially set $X(0) = 999$, $Y(0, 0) = 1$, $L(0) = 1$, $D(0) = 0$. 
+
+### Inputs
+
+### Submodels
+
+#### Within-host model
+
+#### Between-host model
+
+### Parameterization and simulation experiments
+
+#### Calibration (??)
+
+#### Simulation experiments
+
+Results
+---
+
