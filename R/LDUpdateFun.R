@@ -17,15 +17,17 @@ LDUpdateFun <- function(PopMat, rho, nu, psi, epsilon, phi)
   #  according to D
   
   PopMatNew <- PopMat
+  PopMat$SizeOfL <- as.numeric(PopMat$SizeOfL)
+  PopMat$SizeOfD <- as.numeric(PopMat$SizeOfD)
   
   lambda <- beta * sum(PopMat$SizeOfL)
   for(i in 1:dim(PopMat)[1])
   {
     if(PopMat$State[i] == "I"){
-      PopMatNew$SizeOfL[i] <- (rho * PopMat$SizeOfL[i]) - 
+      PopMatNew$SizeOfL[i] <- PopMat$SizeOfL[i] + (rho * PopMat$SizeOfL[i]) - 
         (nu * PopMat$SizeOfL[i] ^ 2 * PopMat$SizeOfD[i]) /
         (psi ^ 2 + PopMat$SizeOfL[i] ^ 2)
-      PopMatNew$SizeOfD[i] <- PopMatNew$SizeOfD[i] * 
+      PopMatNew$SizeOfD[i] <- PopMat$SizeOfD[i] + PopMat$SizeOfD[i] * 
         (phi * nu * PopMat$SizeOfL[i] ^ 2) / (psi ^ 2 + PopMat$SizeOfL[i] ^ 2) - 
         epsilon * PopMat$SizeOfD[i]
     } 

@@ -12,7 +12,8 @@ DiseaseInducedMortFun <- function(PopMat, alpha)
   # matrix with same number of columns as PopMat, updated so that new Is moved to I
   
   PopMatNew <- PopMat
-  Survive <- rep(NA, dim(PopMat)[1])
+  PopMat$SizeOfL <- as.numeric(PopMat$SizeOfL)
+  Die <- rep(NA, dim(PopMat)[1])
   
   for(i in 1:dim(PopMat)[1])
   {
