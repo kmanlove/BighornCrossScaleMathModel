@@ -59,6 +59,8 @@ $$\frac{dL(\tau)}{d\tau} = \rho L(\tau) - \frac{\nu L(\tau)^{2}D(\tau)}{\psi^{2}
 
 $$\frac{dD(\tau)}{d\tau} = D(\tau)\frac{\phi\nu L(\tau)^{2}}{\psi^{2} + L(\tau)^{2}} - \epsilon D(\tau)$$
 
+Consider parameterization of Holling Type III presented here: http://www.math.miami.edu/~ruan/MyPapers/HuangRuanSong-JDE2014.pdf.
+
 ##### Between-host interactions and transmission
 
 Hosts reside in one of three compartments: at a given point $t$ in time, they are either susceptible to pathogen colonization ($X$), currently infected with the pathogen ($Y$), or recovered and immune for pathogen colonization ($Z$). Between-host processes are described by the following set of equations:
